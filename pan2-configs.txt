@@ -1,0 +1,166 @@
+Script started on 2019-11-08 15:54:33-0500
+]0;quipology@LAPTOP-OCR4MH8R: /mnt/c/users/quipology/go/src/gdit[01;32mquipology@LAPTOP-OCR4MH8R[00m:[01;34m/mnt/c/users/quipology/go/src/gdit[00m$ exitssh admin@192.168.1.35[K7
+Password: 
+Last login: Fri Nov  8 12:53:44 2019 from laptop-ocr4mh8r.fios-router.home
+
+Number of failed attempts since last successful login: 0
+
+
+Warning: Your device is still configured with the default admin account credentials. Please change your password prior to deployment.
+admin@PA-VM> set [Kadmin@PA-VM> set cli [Kadmin@PA-VM> set cli pager off 
+admin@PA-VM> set [Kadmin@PA-VM> set cli [Kadmin@PA-VM> set cli confg[Kig-output-format set
+admin@PA-VM> configure
+Entering configuration mode
+[edit]                                                                                                                                                         
+admin@PA-VM# show
+set deviceconfig system type dhcp-client send-hostname yes
+set deviceconfig system type dhcp-client send-client-id no
+set deviceconfig system type dhcp-client accept-dhcp-hostname no
+set deviceconfig system type dhcp-client accept-dhcp-domain no
+set deviceconfig system update-server updates.paloaltonetworks.com
+set deviceconfig system update-schedule threats recurring weekly day-of-week wednesday
+set deviceconfig system update-schedule threats recurring weekly at 01:02
+set deviceconfig system update-schedule threats recurring weekly action download-only
+set deviceconfig system timezone US/Pacific
+set deviceconfig system service disable-telnet yes
+set deviceconfig system service disable-http yes
+set deviceconfig system hostname PA-VM
+set deviceconfig setting config rematch yes
+set deviceconfig setting management hostname-type-in-syslog FQDN
+set deviceconfig setting auto-mac-detect yes
+set network interface ethernet ethernet1/1 layer3 ipv6 neighbor-discovery router-advertisement enable no
+set network interface ethernet ethernet1/1 layer3 ndp-proxy enabled no
+set network interface ethernet ethernet1/1 layer3 ip 172.16.1.2-29 
+set network interface ethernet ethernet1/1 layer3 lldp enable no
+set network interface ethernet ethernet1/1 layer3 interface-management-profile PING
+set network interface ethernet ethernet1/2 layer3 ipv6 neighbor-discovery router-advertisement enable no
+set network interface ethernet ethernet1/2 layer3 ndp-proxy enabled no
+set network interface ethernet ethernet1/2 layer3 lldp enable no
+set network interface ethernet ethernet1/2 layer3 interface-management-profile PING
+set network interface ethernet ethernet1/2 layer3 ip 10.10.2.1-24 
+set network interface tunnel units tunnel.1 ip 192.168.2.2-30 
+set network profiles monitor-profile default interval 3
+set network profiles monitor-profile default threshold 5
+set network profiles monitor-profile default action wait-recover
+set network profiles interface-management-profile PING ping yes
+set network ike crypto-profiles ike-crypto-profiles default encryption [ aes-128-cbc 3des ]
+set network ike crypto-profiles ike-crypto-profiles default hash sha1
+set network ike crypto-profiles ike-crypto-profiles default dh-group group2
+set network ike crypto-profiles ike-crypto-profiles default lifetime hours 8
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-128 encryption aes-128-cbc
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-128 hash sha256
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-128 dh-group group19
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-128 lifetime hours 8
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-256 encryption aes-256-cbc
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-256 hash sha384
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-256 dh-group group20
+set network ike crypto-profiles ike-crypto-profiles Suite-B-GCM-256 lifetime hours 8
+set network ike crypto-profiles ipsec-crypto-profiles default esp encryption [ aes-128-cbc 3des ]
+set network ike crypto-profiles ipsec-crypto-profiles default esp authentication sha1
+set network ike crypto-profiles ipsec-crypto-profiles default dh-group group2
+set network ike crypto-profiles ipsec-crypto-profiles default lifetime hours 1
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-128 esp encryption aes-128-gcm
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-128 esp authentication none
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-128 dh-group group19
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-128 lifetime hours 1
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-256 esp encryption aes-256-gcm
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-256 esp authentication none
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-256 dh-group group20
+set network ike crypto-profiles ipsec-crypto-profiles Suite-B-GCM-256 lifetime hours 1
+set network ike crypto-profiles global-protect-app-crypto-profiles default encryption aes-128-cbc
+set network ike crypto-profiles global-protect-app-crypto-profiles default authentication sha1
+set network ike gateway ToPAN1 authentication pre-shared-key key -AQ==k9OPiG3rzohtZJ4REQ8VZEyW0CY=cm78mYouWYA7f7pIN+KgKw==
+set network ike gateway ToPAN1 protocol ikev1 dpd enable yes
+set network ike gateway ToPAN1 protocol ikev1 ike-crypto-profile Suite-B-GCM-256
+set network ike gateway ToPAN1 protocol ikev2 dpd enable yes
+set network ike gateway ToPAN1 protocol-common nat-traversal enable no
+set network ike gateway ToPAN1 protocol-common fragmentation enable no
+set network ike gateway ToPAN1 local-address interface ethernet1/1
+set network ike gateway ToPAN1 local-address ip 172.16.1.2-29
+set network ike gateway ToPAN1 peer-address ip 172.16.1.1-32
+set network qos profile default class class1 priority real-time
+set network qos profile default class class2 priority high
+set network qos profile default class class3 priority high
+set network qos profile default class class4 priority medium
+set network qos profile default class class5 priority medium
+set network qos profile default class class6 priority low
+set network qos profile default class class7 priority low
+set network qos profile default class class8 priority low
+set network virtual-router default protocol bgp enable no
+set network virtual-router default protocol bgp dampening-profile default cutoff 1.25
+set network virtual-router default protocol bgp dampening-profile default reuse 0.5
+set network virtual-router default protocol bgp dampening-profile default max-hold-time 900
+set network virtual-router default protocol bgp dampening-profile default decay-half-life-reachable 300
+set network virtual-router default protocol bgp dampening-profile default decay-half-life-unreachable 900
+set network virtual-router default protocol bgp dampening-profile default enable yes
+set network virtual-router default protocol bgp routing-options graceful-restart enable yes
+set network virtual-router default protocol rip enable no
+set network virtual-router default protocol ospf enable no
+set network virtual-router default protocol ospfv3 enable no
+set network virtual-router default interface [ ethernet1/1 ethernet1/2 tunnel.1 ]
+set network virtual-router default ecmp algorithm ip-modulo 
+set network virtual-router default routing-table ip static-route "To PAN1" path-monitor enable no
+set network virtual-router default routing-table ip static-route "To PAN1" path-monitor failure-condition any
+set network virtual-router default routing-table ip static-route "To PAN1" path-monitor hold-time 2
+set network virtual-router default routing-table ip static-route "To PAN1" nexthop ip-address 192.168.2.1
+set network virtual-router default routing-table ip static-route "To PAN1" bfd profile None
+set network virtual-router default routing-table ip static-route "To PAN1" interface tunnel.1
+set network virtual-router default routing-table ip static-route "To PAN1" metric 10
+set network virtual-router default routing-table ip static-route "To PAN1" destination 10.10.1.0/24
+set network virtual-router default routing-table ip static-route "To PAN1" route-table unicast 
+set network tunnel ipsec ToPAN1 auto-key ike-gateway ToPAN1 
+set network tunnel ipsec ToPAN1 auto-key ipsec-crypto-profile Suite-B-GCM-256
+set network tunnel ipsec ToPAN1 auto-key proxy-id test protocol any 
+set network tunnel ipsec ToPAN1 auto-key proxy-id test local 10.10.2.0/24
+set network tunnel ipsec ToPAN1 auto-key proxy-id test remote 10.10.1.0/24
+set network tunnel ipsec ToPAN1 tunnel-monitor enable no
+set network tunnel ipsec ToPAN1 tunnel-interface tunnel.1
+set shared application 
+set shared application-group 
+set shared service 
+set shared service-group 
+set shared botnet configuration http dynamic-dns enabled yes
+set shared botnet configuration http dynamic-dns threshold 5
+set shared botnet configuration http malware-sites enabled yes
+set shared botnet configuration http malware-sites threshold 5
+set shared botnet configuration http recent-domains enabled yes
+set shared botnet configuration http recent-domains threshold 5
+set shared botnet configuration http ip-domains enabled yes
+set shared botnet configuration http ip-domains threshold 10
+set shared botnet configuration http executables-from-unknown-sites enabled yes
+set shared botnet configuration http executables-from-unknown-sites threshold 5
+set shared botnet configuration other-applications irc yes
+set shared botnet configuration unknown-applications unknown-tcp destinations-per-hour 10
+set shared botnet configuration unknown-applications unknown-tcp sessions-per-hour 10
+set shared botnet configuration unknown-applications unknown-tcp session-length maximum-bytes 100
+set shared botnet configuration unknown-applications unknown-tcp session-length minimum-bytes 50
+set shared botnet configuration unknown-applications unknown-udp destinations-per-hour 10
+set shared botnet configuration unknown-applications unknown-udp sessions-per-hour 10
+set shared botnet configuration unknown-applications unknown-udp session-length maximum-bytes 100
+set shared botnet configuration unknown-applications unknown-udp session-length minimum-bytes 50
+set shared botnet report topn 100
+set shared botnet report scheduled yes
+set zone inside network layer3 [ ethernet1/1 tunnel.1 ethernet1/2 ]
+set service-group 
+set service 
+set schedule 
+set rulebase 
+set import network interface [ ethernet1/1 tunnel.1 ethernet1/2 ]
+set application-group 
+set application 
+set address 172.16.1.2-29 ip-netmask 172.16.1.2/29
+set address 172.16.1.2-29 description "To PAN1"
+set address 172.16.1.1-32 ip-netmask 172.16.1.1/32
+set address 192.168.2.2-30 ip-netmask 192.168.2.2/30
+set address 10.10.2.1-24 ip-netmask 10.10.2.1/24
+set mgt-config users admin phash fnRL/G5lXVMug
+set mgt-config users admin permissions role-based superuser yes
+[edit]                                                                                                                                                         
+admin@PA-VM# exit
+Exiting configuration mode
+admin@PA-VM> exit
+Connection to 192.168.1.37 closed.
+]0;quipology@LAPTOP-OCR4MH8R: /mnt/c/users/quipology/go/src/gdit[01;32mquipology@LAPTOP-OCR4MH8R[00m:[01;34m/mnt/c/users/quipology/go/src/gdit[00m$ exit
+exit
+
+Script done on 2019-11-08 15:54:58-0500

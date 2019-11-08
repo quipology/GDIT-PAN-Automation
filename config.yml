@@ -1,0 +1,24 @@
+---
+#########################
+# User Defined Settings |
+########################
+
+mgnt-ip: 10.1.1.1             # PAN mgnt IP (Will be used to SSH and configure the firewall)
+
+# Firewall settings
+hostname: gditfw1                    # Set firewall hostname
+
+
+
+# IPSEC Tunnel Settings
+tunnel-name: Shared Services VPC          # Set the name of the tunnel
+tunnel-interface: Tunnel.10               # Set the tunnel interface
+virtual-router: default                   # Set virtual router the tunnel will use
+ike-crypto-profile: IKE_Profile           # Set IKE profile
+ike-gateway: Shared Services VPN          # Set IKE gateway
+ipsec-crypto-profile: IPSEC_Profile       # Set IPSEC profile
+peer-ip:  10.10.5.1                       # Set Peer IP for the tunnel
+destination-subnets:                      # Set interesting traffic destination subnets
+  - 172.16.1.0/24
+  - 172.16.2.0/24
+  - 172.16.3.0/52
