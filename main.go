@@ -1,6 +1,8 @@
 package main
 
 import (
+	crand "crypto/rand"
+	"encoding/base64"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -10,30 +12,52 @@ import (
 	"strings"
 	"time"
 
-	"golang.org/x/crypto/ssh"
 	yaml "gopkg.in/yaml.v2"
 )
-
-type Config struct {
-	MgntIP             string
-	Hostname           string
-	TunnelName         string
-	TunnelInterface    string
-	VirtualRouter      string
-	IKEprofile         string
-	IKEgateway         string
-	IPSECprofile       string
-	PeerIP             string
-	InterestingTraffic []string
-}
 
 const (
 	username = "admin"
 	password = "admin"
 	port     = ":22"
 
+	preSharedKeyLength = 30 // Desired length of pre-shared-key
+
 	logFile = "pancfg.log"
 )
+
+var preSharedKey string
+
+// PAN1 represents Firewall 1's config settings
+type PAN1 struct {
+	MgntIP             string   `yaml:"pan1-mgnt-ip`
+	Hostname           string   `yaml:"pan1-hostname"`
+	TunnelName         string   `yaml:"pan1-tunnel-name"`
+	TunnelInterface    string   `yaml:"pan1-tunnel-interface`
+	TunnelIPMask       string   `yaml:"pan1-tunnel-ip-and-mask"`
+	VirtualRouter      string   `yaml:"pan1-virtual-router"`
+	IKEprofile         string   `yaml:"pan1-ike-crypto-profile"`
+	IKEgateway         string   `yaml:"pan1-ike-gateway"`
+	IPSECprofile       string   `yaml:"pan1-ipsec-crypto-profile"`
+	PeerIPMask         string   `yaml:"pan1-peer-ip-and-mask"`
+	InterestingTraffic []string `yaml:"pan1-destination-subnets"`
+	PSK                string   // Pre-shared-key
+}
+
+// PAN2 represents Firewall 2's config settings
+type PAN2 struct {
+	MgntIP             string   `yaml:"pan2-mgnt-ip`
+	Hostname           string   `yaml:"pan2-hostname"`
+	TunnelName         string   `yaml:"pan2-tunnel-name"`
+	TunnelInterface    string   `yaml:"pan2-tunnel-interface`
+	TunnelIPMask       string   `yaml:"pan2-tunnel-ip-and-mask"`
+	VirtualRouter      string   `yaml:"pan2-virtual-router"`
+	IKEprofile         string   `yaml:"pan2-ike-crypto-profile"`
+	IKEgateway         string   `yaml:"pan2-ike-gateway"`
+	IPSECprofile       string   `yaml:"pan2-ipsec-crypto-profile"`
+	PeerIPMask         string   `yaml:"pan2-peer-ip-and-mask"`
+	InterestingTraffic []string `yaml:"pan2-destination-subnets"`
+	PSK                string   // Pre-shared-key
+}
 
 // Logging function to set destination log file
 func setLogger() *os.File {
@@ -44,78 +68,16 @@ func setLogger() *os.File {
 	return l
 }
 
-// SSH is the ssh process
-func SSH(ip string) {
-	config := &ssh.ClientConfig{
-		User: username,
-		Auth: []ssh.AuthMethod{
-			ssh.Password(password),
-		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-	}
-
-	client, err := ssh.Dial("tcp", ip+port, config)
-	if err != nil {
-		fmt.Println()
-		fmt.Println("*** Authentication Failed - check your credentials. ***")
-		fmt.Println()
-		return
-	}
-
-	session, err := client.NewSession()
-	if err != nil {
-		log.Fatal("Failed to create session: ", err)
-	}
-	defer session.Close()
-
-	session.Stdout = os.Stdout
-
-	pipe, err := session.StdinPipe()
-	if err != nil {
-		fmt.Println("Unable to create session pipe: ", err)
-		return
-	}
-
-	if err = session.Shell(); err != nil {
-		fmt.Println("Unable to start shell on server: ", err)
-		return
-	}
-
-	commands := []string{
-		"configure",
-	}
-	// Run commands
-	for _, cmd := range commands {
-		fmt.Fprintf(pipe, "%v\n", cmd)
-		time.Sleep(1300 * time.Millisecond)
-		fmt.Println()
-	}
-
-	// Exit config mode
-	fmt.Fprint(pipe, "exit\n")
-	// Exit session
-	fmt.Fprint(pipe, "exit\n")
-	// Wait for last command to exit
-	if err = session.Wait(); err != nil {
-		fmt.Println("The last command did not exit properly: ", err)
-		return
-	}
-}
-
 func main() {
-	// -----------------
-	// | Setup logging |
-	// -----------------
-	// Generate unique session ID for logging
+	// Setup Logging and Generate unique session ID
 	rand.Seed(time.Now().UnixNano())
 	sessionID := rand.Intn(99999)
 	// Set log file
 	log.SetOutput(setLogger())
 	// Start logging
 	log.Printf("**** Session - %v - started ****\n", sessionID)
-	// --------------------
-	// | Read config file |
-	// -------------------
+
+	//--------------------------------------------------
 	// Config filename flag (default: config.yml)
 	configFile := flag.String("f", "config.yml", "Specify your config `filename` (ex. pancfg -f config.yml)")
 	flag.Parse()
@@ -123,25 +85,36 @@ func main() {
 	if !strings.HasSuffix(strings.ToLower(*configFile), ".yml") {
 		fmt.Println("error: config must be YAML file (.yml)")
 	}
-	// Open config file
-	file, err := os.Open(*configFile)
+	// Read config file
+	fileBytes, err := ioutil.ReadFile(*configFile)
 	if err != nil {
+		log.Panic(err)
+	}
+	//--------------------------------------------------
+	// Decode YAML file
+	var pan1 PAN1
+	if err = yaml.Unmarshal(fileBytes, &pan1); err != nil {
 		fmt.Println(err)
 	}
-	defer file.Close()
-	// Read file
-	fileBytes, err := ioutil.ReadAll(file)
-	if err != nil {
+	var pan2 PAN2
+	if err = yaml.Unmarshal(fileBytes, &pan2); err != nil {
 		fmt.Println(err)
 	}
-	// Decode YAML
-	var c Config
-	if err = yaml.Unmarshal(fileBytes, &c); err != nil {
-		fmt.Println(err)
+
+	// Generate pre-shared-key for IPSEC tunnel
+	shell := make([]byte, preSharedKeyLength)
+	if _, err = crand.Read(shell); err != nil {
+		log.Panic(err)
 	}
+	preSharedKey = base64.URLEncoding.EncodeToString(shell)
+	pan1.PSK = preSharedKey
+	pan2.PSK = preSharedKey
 
 	fmt.Printf("Loading config file '%v'..\n", *configFile)
 	// Check for missing fields in config file
 	fmt.Println("Checking for missing fields..")
-	checkMissingFields(&c)
+	checkMissingFields(&pan1)
+
+	// Start logging
+	log.Printf("**** Session - %v - finished ****\n", sessionID)
 }

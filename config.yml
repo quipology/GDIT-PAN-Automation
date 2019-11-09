@@ -3,22 +3,44 @@
 # User Defined Settings |
 ########################
 
-mgnt-ip: 10.1.1.1             # PAN mgnt IP (Will be used to SSH and configure the firewall)
+pan1-mgnt-ip: 192.168.1.35             # PAN mgnt IP (Will be used to SSH and configure the firewall)
 
 # Firewall settings
-hostname: gditfw1                    # Set firewall hostname
-
-
+pan1-hostname: gditfw1                    # Set firewall hostname
 
 # IPSEC Tunnel Settings
-tunnel-name: Shared Services VPC          # Set the name of the tunnel
-tunnel-interface: Tunnel.10               # Set the tunnel interface
-virtual-router: default                   # Set virtual router the tunnel will use
-ike-crypto-profile: IKE_Profile           # Set IKE profile
-ike-gateway: Shared Services VPN          # Set IKE gateway
-ipsec-crypto-profile: IPSEC_Profile       # Set IPSEC profile
-peer-ip:  10.10.5.1                       # Set Peer IP for the tunnel
-destination-subnets:                      # Set interesting traffic destination subnets
-  - 172.16.1.0/24
-  - 172.16.2.0/24
-  - 172.16.3.0/52
+pan1-tunnel-name: App VPC          # Set the name of the tunnel
+pan1-tunnel-interface: Tunnel.22
+pan1-tunnel-ip-and-mask: 3.3.3.1/30               # Set the tunnel interface
+pan1-local-ip-and-mask: 172.16.1.1/30
+pan1-virtual-router: default                   # Set virtual router the tunnel will use
+pan1-ike-crypto-profile: IKE_Profile           # Set IKE profile
+pan1-ike-gateway: App VPN          # Set IKE gateway
+pan1-ipsec-crypto-profile: IPSEC_Profile       # Set IPSEC profile
+pan1-peer-ip-and-mask:  10.20.1.2/24                       # Set Peer IP for the tunnel
+pan1-destination-subnets:                      # Set interesting traffic destination subnets
+  - 10.10.2.0/24
+  # - 172.16.2.0/24
+  # - 172.16.3.0/52
+
+#=========================================================
+
+pan2-mgnt-ip: 192.168.1.37             # PAN mgnt IP (Will be used to SSH and configure the firewall)
+
+# Firewall settings
+pan2-hostname: gditfw2                    # Set firewall hostname
+
+# IPSEC Tunnel Settings
+pan2-tunnel-name: Egress VPC          # Set the name of the tunnel
+pan2-tunnel-interface: Tunnel.22
+pan1-tunnel-ip-and-mask: 3.3.3.2/30               # Set the tunnel interface
+pan1-local-ip-and-mask: 172.16.1.2/30
+pan2-virtual-router: default                   # Set virtual router the tunnel will use
+pan2-ike-crypto-profile: IKE_Profile           # Set IKE profile
+pan2-ike-gateway: Egress VPN          # Set IKE gateway
+pan2-ipsec-crypto-profile: IPSEC_Profile       # Set IPSEC profile
+pan2-peer-ip-and-mask:  10.20.1.1/24                       # Set Peer IP for the tunnel
+pan2-destination-subnets:                      # Set interesting traffic destination subnets
+  - 10.10.1.0/24
+  # - 172.16.2.0/24
+  # - 172.16.3.0/52
