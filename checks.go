@@ -1,4 +1,5 @@
-// This file contains all check related functions
+// Author: Bobby Williams <quipology@gmail.com>
+
 package main
 
 import (

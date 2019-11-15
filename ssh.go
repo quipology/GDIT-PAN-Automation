@@ -1,3 +1,5 @@
+// Author: Bobby Williams <quipology@gmail.com>
+
 package main
 
 import (

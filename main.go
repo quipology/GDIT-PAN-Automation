@@ -1,3 +1,5 @@
+// Author: Bobby Williams <quipology@gmail.com>
+
 package main
 
 import (
@@ -104,7 +106,7 @@ func main() {
 	// Set log file
 	log.SetOutput(setLogger())
 	// Start logging
-	log.Printf("**** Session - %v - started ****\n", sessionID)
+	log.Printf("**** Session - %v - start ****\n", sessionID)
 
 	//--------------------------------------------------
 	// Config filename flag (default: config.yml)
@@ -236,5 +238,5 @@ func main() {
 	wg.Wait() // Wait for PANs to be configured
 
 	// End logging
-	log.Printf("**** Session - %v - finished ****\n", sessionID)
+	log.Printf("**** Session - %v - end ****\n", sessionID)
 }

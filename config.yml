@@ -6,7 +6,7 @@
 pan1-mgnt-ip: 192.168.1.35             # PAN mgnt IP (Will be used to SSH and configure the firewall)
 
 # Firewall settings
-pan1-hostname: haha1                    # Set firewall hostname
+pan1-hostname: gditfw1                    # Set firewall hostname
 
 # IPSEC Tunnel Settings
 pan1-tunnel-name: App VPC          # Set the name of the tunnel
@@ -28,7 +28,7 @@ pan1-destination-subnets:                      # Set interesting traffic destina
 pan2-mgnt-ip: 192.168.1.37             # PAN mgnt IP (Will be used to SSH and configure the firewall)
 
 # Firewall settings
-pan2-hostname: haha2                    # Set firewall hostname
+pan2-hostname: gditfw2                    # Set firewall hostname
 
 # IPSEC Tunnel Settings
 pan2-tunnel-name: Egress VPC          # Set the name of the tunnel
