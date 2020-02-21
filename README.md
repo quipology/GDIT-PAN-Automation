@@ -13,4 +13,4 @@ This tool configures a site-to-site VPN between two Palo Alto Firewalls.
 - [Bobby Williams](https://www.linkedin.com/in/bobby-williams-48222450)
 
 ## License
-[MIT](LICENSE.md)
+[MIT](LICENSE)
