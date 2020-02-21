@@ -1,0 +1,13 @@
+2019/11/15 15:22:08 **** Session - 40260 - start ****
+2019/11/15 15:22:08 Checking for missing fields..
+2019/11/15 15:22:08 Checking for invalid IPv4 syntax..
+2019/11/15 15:22:08 Checking for invalid IPMask syntax..
+2019/11/15 15:22:08 Checking for invalid Tunnel number..
+2019/11/15 15:22:08 All Checks Passed!
+2019/11/15 15:22:08 Connecting to PAN2..
+2019/11/15 15:22:08 Connecting to PAN1..
+2019/11/15 15:22:10 Login to PAN1(192.168.1.35) successful.
+2019/11/15 15:22:10 Login to PAN2(192.168.1.37) successful.
+2019/11/15 15:22:34 PAN1 configuration complete.
+2019/11/15 15:22:34 PAN2 configuration complete.
+2019/11/15 15:22:34 **** Session - 40260 - end ****
